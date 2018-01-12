@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run build
+      - deploy:
+          name: If master, deploy to S3
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              aws s3 sync build s3://alexperez.ninja/ --delete
+            fi

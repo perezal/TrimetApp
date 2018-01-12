@@ -1,0 +1,636 @@
+html {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	box-sizing: border-box;
+	background: url('/images/background.jpg');
+	background-position: center center;
+	background-attachment: fixed;
+	background-size: cover;
+	background-repeat: no-repeat;
+
+	font-family: "Exo";
+}
+
+a {
+	text-decoration: none;
+}
+
+#app {
+}
+
+.home {
+	padding: 0 15vw;
+	box-sizing: border-box;
+}
+
+.home h1 {
+	font-size: 48px;
+	font-family: "Orbitron";
+	color: white;
+}
+
+.subtitle {
+	color: white;
+	font-size: 24px;
+	position: relative;
+	text-align: right;
+	font-family: "Orbitron";
+}
+
+h2 {
+	font-size: 28px;
+	font-family: "Exo";
+	color: white;
+}
+
+.github-logo {
+	position: absolute;
+	top: 0;
+	right: 0;
+	vertical-align: middle;
+}
+
+.github-logo img {
+	vertical-align: middle;
+}
+
+.github-logo span {
+	position: relative;
+	color: white;
+	margin: 10px;
+	vertical-align: middle;
+}
+
+.github-logo span:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 2px;
+	width: 0;
+	background: white;
+	transition: 200ms all ease-in-out;
+}
+
+.github-logo:hover span:after {
+	width: 100%;
+}
+
+blockquote {
+	display: none;
+
+	text-align: right;
+	border-right: 10px solid firebrick;
+	margin: 0;
+	padding: 5px 20px;
+	color: white;
+}
+
+blockquote p {
+	font-size: 18px;
+}
+
+.search {
+	margin: 0;
+	padding: 0;
+}
+
+.search-bar {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 30%;
+	margin: 0 1.667%;
+}
+
+.search-bar button {
+	display: block;
+	font-family: "Exo";
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	font-size: 30px;
+	color: white;
+	padding: 50px 0;
+	box-sizing: border-box;
+  background: transparent;
+}
+
+.search input {
+	font-family: "Exo";
+}
+
+.clear-bar {
+	position: relative;
+	display: block;
+	width: auto;
+}
+
+.clear-bar button {
+	position: absolute;
+	right: 0;
+	top: -30px;
+	height: 30px;
+	width: 30px;
+}
+
+.clear-bar span {
+	top: 10px;
+	position: absolute;
+	height: 2px;
+	width: 30px;
+	background: white;
+	transition: transform 0.2s linear;
+}
+
+.bar1 {
+	transform: rotateZ(-45deg);
+}
+
+.bar2 {
+	transform: rotateZ(45deg);
+}
+
+/******************
+*** line-search ***
+*******************/
+
+.line-search {
+	border: 3px solid white;
+	border-radius: 20px;
+	box-sizing: border-box;
+}
+
+/**********************
+*** location-search ***
+***********************/
+
+.location-search {
+	border: 3px solid white;
+	border-radius: 20px;
+	box-sizing: border-box;
+}
+
+.arrival {
+	background-color: #fff;
+	border-radius: 10px;
+	padding: 5px 10px;
+	margin: 10px;
+}
+
+.arrival h2 {
+	color: #000;
+	margin: 10px;
+	padding: 0;
+	font-size: 18px;
+}
+
+.search-hover button {
+	transition: 0.2s all ease-in-out
+}
+
+.search-hover:hover {
+}
+
+.search-hover button:after {
+	content: "";
+	position: absolute;
+	top: 40px;
+	right: -5%;
+	height: 2px;
+	width: 0;
+	background: white;
+	transition: 200ms all ease-in-out;
+}
+
+.search-hover:hover button:after {
+	width: 110%;
+}
+
+.search-hover button:before {
+	content: "";
+	position: absolute;
+	bottom: 40px;
+	left: -5%;
+	height: 2px;
+	width: 0;
+	background: white;
+	transition: 200ms all ease-in-out;
+}
+
+.search-hover:hover button:before {
+	width: 110%;
+}
+
+#nearby-stops.loading {
+	/*background-color: black;*/
+}
+
+#get-arrivals {
+	border-radius: 0 0 20px 20px;
+	background-color: white;
+	color: black;
+	padding: 14px 0;
+	margin: 0 auto;
+	border: 3px solid white;
+	border-top: none;
+
+	transition: all 0.2s linear;
+}
+
+#get-arrivals.loading {
+	background-color: black;
+	color: white;
+}
+
+#get-arrivals.loading ~ .stopid-input {
+	background: white !important;
+	color: black;
+}
+
+.stopid-input {
+	display: block;
+	width: 100%;
+	font-size: 30px;
+	margin: 0 auto;
+	text-align: center;
+	border: 3px solid white;
+	box-sizing: border-box;
+	padding: 15px 0;
+	border-radius: 20px 20px 0 0;
+	background-color: transparent;
+	color: white;
+
+	transition: all 0.2s linear;
+
+}
+
+.stopid-input::placeholder {
+	color: #ccc;
+}
+
+.stopid-input:focus {
+	background: white;
+	color: black;
+	outline: none;
+}
+
+.stopid-input:focus::placeholder {
+	color: rgba(255,255,255,0.4);
+}
+
+.stopid-input:focus ~ #get-arrivals {
+	background: transparent;
+	color: white;
+}
+
+.search-form {
+	font-size: 18px;
+}
+
+.line-menu select {
+	display: block;
+	height: 50px;
+	font-size: 24px;
+	width: 75%;
+	margin: 0 auto;
+}
+
+.line-menu .search-hover {
+	width: 50%;
+	margin: 0 auto;
+}
+
+.line-menu .line-submit {
+	position: relative;
+	margin: 0 auto;
+	display: block;
+	text-align: center;
+	font-size: 28px;
+	padding: 50px 0;
+	border-radius: 10px;
+	border: 3px solid white;
+	color: white;
+}
+
+.results {
+	margin: 20px 1.667%;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+thead {
+	text-align: left;
+}
+
+thead th {
+}
+
+th {
+	background-color: transparent;
+	font-size: 18px;
+	color: white;
+	padding: 10px 10px;
+}
+
+tr {
+	font-size: 16px;
+	cursor: pointer;
+	transition: 0.2s all ease-in-out;
+}
+
+tbody tr:nth-child(odd) {
+	background-color: #eee;
+}
+
+tbody tr:nth-child(even) {
+	background-color: transparent;
+	color: white;
+}
+
+tbody tr:hover {
+	background-color: black;
+	color: white;
+}
+
+td {
+	padding: 15px 10px;
+}
+
+.line-icon {
+	display: inline-block;
+	border-radius: 50px;
+	font-size: 14px;
+	margin: 5px 10px;
+	line-height: 32px;
+	text-align: center;
+	width: 30px;
+	height: 30px;
+	background-color: #084c8d;
+	color: white;
+}
+
+/* red line */
+.line90 {
+	background-color: #d31f43;
+}
+
+/* blue line */
+.line100 {
+	background-color: #0f6aac;
+}
+
+/* yellow line */
+.line190 {
+	background-color: #ffc524;
+}
+
+/* green line */
+.line200 {
+	background-color: #028953;
+}
+
+/* wes line */
+.line203 {
+	background-color: black;
+}
+
+/* orange line */
+.line290 {
+	background-color: #d25d13;
+}
+
+.blueline {
+	/*background-color: #0f6aac;*/
+	border-left: 15px solid #0f6aac;
+}
+
+.busline {
+	/*background-color: #084c8d;*/
+	border-left: 15px solid #084c8d;
+}
+
+.greenline {
+	/*background-color: #028953;*/
+	border-left: 15px solid #028953;
+}
+
+.orangeline {
+	/*background-color: #d25d13;*/
+	border-left: 15px solid #d25d13;
+}
+
+.redline {
+	/*background-color: #d31f43;*/
+	border-left: 15px solid #d31f43;
+}
+
+.wesline {
+	/*background-color: black;*/
+	border-left: 15px solid black;
+}
+
+.yellowline {
+	/*background-color: #ffc524;*/
+	border-left: 15px solid #ffc524;
+}
+
+@keyframes spin {
+	0% {transform: rotate(0deg);}
+	100% {transform: rotate(360deg);}
+}
+
+.swingLeft-enter {
+	opacity: 0;
+}
+
+.swingLeft-enter.swingLeft-enter-active {
+	opacity: 1;
+	transition: opacity 500ms linear;
+}
+
+.swingLeft-exit {
+	opacity: 1;
+}
+
+.swingLeft-exit.swingLeft-exit-active {
+	opacity: 0;
+	transition: opacity 500ms linear;
+}
+
+
+.loading-animation {
+	position: relative;
+	width: 60px;
+	height: 40px;
+	margin: 0 auto;
+}
+
+.circle {
+	position: absolute;
+	top: -10px;
+  background-color: rgba(0,0,0,0);
+  border: 5px solid rgba(255,255,255,0.9);
+  opacity: .9;
+  border-right: 5px solid rgba(0,0,0,0);
+  border-left: 5px solid rgba(0,0,0,0);
+  border-radius: 50px;
+  box-shadow: 0 0 35px #fff;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  -moz-animation: spinPulse 1s infinite ease-in-out;
+  -webkit-animation: spinPulse 1s infinite linear;
+}
+
+.circle1 {
+    background-color: rgba(0,0,0,0);
+    border: 5px solid rgba(255,255,255,0.9);
+    opacity: .9;
+    border-left: 5px solid rgba(0,0,0,0);
+    border-right: 5px solid rgba(0,0,0,0);
+    border-radius: 50px;
+    box-shadow: 0 0 15px #fff;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    position: absolute;
+		left: 10px;
+    -moz-animation: spinoffPulse 1s infinite linear;
+    -webkit-animation: spinoffPulse 1s infinite linear;
+}
+
+@-moz-keyframes spinPulse {
+    0% {
+        -moz-transform: rotate(160deg);
+        opacity: 0;
+        box-shadow: 0 0 1px #fff;
+    }
+
+    50% {
+        -moz-transform: rotate(145deg);
+        opacity: 1;
+    }
+
+    100% {
+        -moz-transform: rotate(-320deg);
+        opacity: 0;
+    };
+}
+
+@-moz-keyframes spinoffPulse {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(360deg);
+    };
+}
+
+@-webkit-keyframes spinPulse {
+    0% {
+        -webkit-transform: rotate(160deg);
+        opacity: 0;
+        box-shadow: 0 0 1px #fff;
+    }
+
+    50% {
+        -webkit-transform: rotate(145deg);
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-transform: rotate(-320deg);
+        opacity: 0;
+    };
+}
+
+@-webkit-keyframes spinoffPulse {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    };
+}
+
+
+@media only screen and (max-width: 1000px) {
+	.home {
+		padding: 10px 5vw;
+	}
+
+	.home h1 {
+		font-size: 28px;
+	}
+
+	.subtitle {
+		display: none;
+		font-size: 18px;
+	}
+
+	h2 {
+		font-size: 20px;
+	}
+
+	blockquote {
+		display: none;
+		font-size: 14px;
+	}
+
+	.search-bar {
+		width: 100%;
+		margin: 20px 0;
+	}
+
+	#nearby-stops {
+		font-size: 20px;
+	}
+
+	#search-by-line {
+		font-size: 20px;
+	}
+
+	#get-arrivals {
+		font-size: 20px;
+	}
+
+	.loading-animation {
+		height: 27px;
+	}
+
+	.loading-animation .circle {
+		top: -16px;
+	}
+
+	.loading-animation .circle1 {
+		top: -6px;
+	}
+
+	.search input {
+		font-size: 20px;
+	}
+
+	.line-menu .search-hover {
+		width: 100%;
+		margin: 0 auto;
+	}
+
+	.line-menu .line-submit {
+		font-size: 20px;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.home h1 {
+		font-size: 18px;
+	}
+}
