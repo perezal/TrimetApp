@@ -10,5 +10,5 @@ jobs:
           name: If master, deploy to S3
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              aws s3 sync build s3://alexperez.ninja/ --delete
+              rsync -va --delete ./build/ ${WEBSERVER}:${WEBADDRESS}
             fi
