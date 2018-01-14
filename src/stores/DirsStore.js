@@ -35,7 +35,7 @@ class DirsStore extends EventEmitter {
   handleActions(action) {
     switch (action.type) {
       case "RECEIVE_DIRS": {
-        this.receiveDirs(action.response);
+        this.receiveDirs(action.data);
         break;
       }
       default:

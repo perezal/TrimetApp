@@ -139,7 +139,7 @@ class ArrivalsStore extends EventEmitter {
         break;
       }
       case "RECEIVE_ARRIVALS": {
-        this.receiveArrivals(action.response);
+        this.receiveArrivals(action.data);
         break;
       }
       case "CLEAR_ARRIVALS": {

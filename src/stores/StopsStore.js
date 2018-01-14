@@ -59,7 +59,7 @@ class StopsStore extends EventEmitter {
         break;
       }
       case "RECEIVE_STOPS": {
-        this.receiveStops(action.response);
+        this.receiveStops(action.data);
         break;
       }
       default:

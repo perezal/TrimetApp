@@ -2,71 +2,68 @@ import Dispatcher from "../Dispatcher";
 
 export function getArrivals(stopID, arrivalsCallback) {
 
-  const source = "https://trimetapp.alexperez.ninja/api/arrivals/" + stopID;
+  const source = "https://api.alexperez.ninja/trimet/arrivals/" + stopID;
 
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState === 4) {
-      if (xmlhttp.status === 200 && xmlhttp.statusText === 'OK') {
-        const response = JSON.parse(xmlhttp.response);
-        Dispatcher.dispatch({type: "RECEIVE_ARRIVALS", response});
+  fetch(source)
+    .then(function(response) {
+      if (response.status !== 200) {
+        console.log("Request error. Status code: " + response.status);
+        return;
       }
-      else {
-        alert("There was an error, please try again later.");
-      }
-      arrivalsCallback(); // remove loading text
-    }
-  };
 
-  xmlhttp.open('GET', source, true);
-  xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xmlhttp.send();
+      response.json().then(function(data) {
+        console.log(data);
+        Dispatcher.dispatch({type: "RECEIVE_ARRIVALS", data});
+      });
+      arrivalsCallback();
+    })
+    .catch(function(error) {
+      alert("error: " + error);
+    });
 }
 
 export function getLines(linesCallback) {
 
-  const source = "https://trimetapp.alexperez.ninja/api/lines/";
+  const source = "https://api.alexperez.ninja/trimet/lines/";
 
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState === 4) {
-      if (xmlhttp.status === 200 && xmlhttp.statusText === 'OK' && xmlhttp.response) {
-        const response = JSON.parse(xmlhttp.response);
-        Dispatcher.dispatch({type: "RECEIVE_LINES", response});
+  fetch(source)
+    .then(function(response) {
+      if (response.status !== 200) {
+        console.log("Request error. Status code: " + response.status);
+        return;
       }
-      else {
-        alert("There was an error, please try again later.");
-      }
-      linesCallback(); // remove loading text
-    }
-  };
 
-  xmlhttp.open('GET', source, true);
-  xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xmlhttp.send();
+      response.json().then(function(data) {
+        console.log(data);
+        Dispatcher.dispatch({type: "RECEIVE_LINES", data});
+      });
+      linesCallback();
+    })
+    .catch(function(error) {
+      alert("error: " + error);
+    });
 
 }
 
 export function getLineDir(lineSelect) {
 
-  const source = "https://trimetapp.alexperez.ninja/api/lines/" + lineSelect;
+  const source = "https://api.alexperez.ninja/trimet/lines/" + lineSelect;
 
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState === 4) {
-      if (xmlhttp.status === 200 && xmlhttp.statusText === 'OK') {
-        const response = JSON.parse(xmlhttp.response);
-        Dispatcher.dispatch({type: "RECEIVE_DIRS", response});
+  fetch(source)
+    .then(function(response) {
+      if (response.status !== 200) {
+        console.log("Request error. Status code: " + response.status);
+        return;
       }
-      else {
-        alert("There was an error, please try again later.");
-      }
-    }
-  };
 
-  xmlhttp.open('GET', source, true);
-  xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xmlhttp.send();
+      response.json().then(function(data) {
+        console.log(data);
+        Dispatcher.dispatch({type: "RECEIVE_DIRS", data});
+      });
+    })
+    .catch(function(error) {
+      alert("error: " + error);
+    });
 }
 
 export function getNearbyStops(locationCallback) {
@@ -86,33 +83,31 @@ export function getNearbyStops(locationCallback) {
     const longitude = position.coords.longitude;
     const latitude = position.coords.latitude;
 
-    const source = "https://trimetapp.alexperez.ninja/api/stops/" + longitude + "/" + latitude;
+    console.log(longitude + " " + latitude);
 
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-      if (xmlhttp.readyState === 4) {
+    const source = "https://api.alexperez.ninja/trimet/stops/" + longitude + "/" + latitude;
 
-        if (xmlhttp.status === 200 && xmlhttp.statusText === 'OK' && xmlhttp.response) {
-
-          const response = JSON.parse(xmlhttp.response);
-
-          if (response.resultSet.location) { // response contains more than timestamp
-
-            Dispatcher.dispatch({type: "RECEIVE_STOPS", response});
-
-          } else if (response.resultSet.queryTime) { // response contains timestamp, but no location information
-            alert("Sorry, we couldn't find any stops near you.");
-          }
-        } else {
-          alert("There was an error, please try again later.");
+    fetch(source)
+      .then(function(response) {
+        if (response.status !== 200) {
+          console.log("Request error. Status code: " + response.status);
+          return;
         }
-        locationCallback(); // remove loading text
-      }
-    };
+        response.json().then(function(data) {
+          if (data.resultSet.location) { // response contains location information
+            Dispatcher.dispatch({type: "RECEIVE_STOPS", data});
+          } else if (data.resultSet.querytime) { // response does not contain location, but has a timestamp
+            alert("Sorry, we couldn't find any stops near you.");
+          } else {
+            alert("There was an error, please try again later.");
+          }
+        });
+        locationCallback();
+      })
+      .catch(function(error) {
+        alert("error: " + error);
+      });
 
-    xmlhttp.open('GET', source, true);
-    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xmlhttp.send();
   }
 }
 

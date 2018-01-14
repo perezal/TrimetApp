@@ -78,7 +78,7 @@ class LinesStore extends EventEmitter {
         break;
       }
       case "RECEIVE_LINES": {
-        this.receiveLines(action.response);
+        this.receiveLines(action.data);
         break;
       }
       default:
