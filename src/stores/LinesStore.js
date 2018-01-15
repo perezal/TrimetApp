@@ -24,7 +24,7 @@ class LinesStore extends EventEmitter {
 
   receiveLines(result) {
 
-    var rawLinesData = result.resultSet.route;
+    let rawLinesData = result.resultSet.route;
 
     if (!rawLinesData) {
 
@@ -32,36 +32,26 @@ class LinesStore extends EventEmitter {
       return;
     }
 
-    // remove specific non-relevant or incompatible lines
-    const removeLinesList = [208, // Aerial Tram
-                              291,
-                              98,
-                              293,
-                              150,
-                              103,
-                              13,
-                              198]
+    // non-relevant and incompatible lines
+    const linesBlackList = [
+      208, // Aerial Tram
+      291, // Orange Night Bus
+      98, // MAX Shuttle
+      293, // Portland Streetcar Shuttle
+      294, // CL Line Shuttle
+      150, // MAX Transit Mall Shuttle
+      103, // WES Shuttle
+      13, // MAX Red Line Shuttle
+      198, // Shuttle
+    ];
 
-    for (var x = rawLinesData.length - 1; x >= 0; x--) {
-      for (var line in removeLinesList) {
-        if (rawLinesData[x].route === removeLinesList[line]) {
-          rawLinesData.splice(x, 1);
-          removeLinesList.splice(line, 1);
-          break;
-        }
-      }
-
-    }
-
-    console.log(rawLinesData);
-
-    const linesData = rawLinesData.map((line) => {
-
-      return {
-        name: line.desc,
-        route: line.route,
-      };
-    });
+    const linesData = rawLinesData
+      .filter( (line) => !linesBlackList.includes(line.route) )
+      .map((line) => ({
+          name: line.desc,
+          route: line.route,
+        })
+      );
 
     this.lineData = {
       lines: linesData

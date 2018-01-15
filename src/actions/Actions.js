@@ -12,7 +12,6 @@ export function getArrivals(stopID, arrivalsCallback) {
       }
 
       response.json().then(function(data) {
-        console.log(data);
         Dispatcher.dispatch({type: "RECEIVE_ARRIVALS", data});
       });
       arrivalsCallback();
@@ -34,7 +33,6 @@ export function getLines(linesCallback) {
       }
 
       response.json().then(function(data) {
-        console.log(data);
         Dispatcher.dispatch({type: "RECEIVE_LINES", data});
       });
       linesCallback();
@@ -57,7 +55,6 @@ export function getLineDir(lineSelect) {
       }
 
       response.json().then(function(data) {
-        console.log(data);
         Dispatcher.dispatch({type: "RECEIVE_DIRS", data});
       });
     })
@@ -82,8 +79,6 @@ export function getNearbyStops(locationCallback) {
   function showPosition(position) {
     const longitude = position.coords.longitude;
     const latitude = position.coords.latitude;
-
-    console.log(longitude + " " + latitude);
 
     const source = "https://api.alexperez.ninja/trimet/stops/" + longitude + "/" + latitude;
 

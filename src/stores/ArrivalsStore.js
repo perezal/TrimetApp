@@ -36,16 +36,14 @@ class ArrivalsStore extends EventEmitter {
       return;
     }
 
-    const arrivalData = rawArrivalData.map((arrival) => {
-
-      return {
+    const arrivalData = rawArrivalData.map((arrival) => ({
         key: arrival.scheduled,
         name: arrival.shortSign,
         arrivesIn: arrival.estimated ? this.formatEta(arrival.estimated) : this.formatScheduled(arrival.scheduled),
         estimated: (arrival.estimated !== undefined),
         routeColor: this.formatRouteColor(arrival.route)
-      };
-    });
+      })
+    );
 
     this.arrivalData = {
       stopID: rawResultSet.location[0].locid,
@@ -57,36 +55,25 @@ class ArrivalsStore extends EventEmitter {
 
   }
 
-  formatTime(time) {
-    // formats the Trimet time into a js Date object
-
-    const month = parseInt(time.substr(5,2), 10) - 1;  //because js counts months from 0-11;
-
-    const day = time.substr(8,2);
-    const year = time.substr(0,4);
-    const hour = time.substr(11,2);
-    const minute = time.substr(14,2);
-    const second = time.substr(17,2);
-    const formatted_time = new Date(year,month,day,hour,minute,second);
-    return formatted_time;
-  }
-
   formatScheduled(scheduled) {
-    const scheduledTime = this.formatTime(scheduled);
-    return scheduledTime.toLocaleTimeString();
+    return new Date(scheduled).toLocaleTimeString();
   }
 
   formatEta(estimated) {
-    const trimetTime = this.formatTime(estimated).getTime(); //pulls arrival time in milliseconds
 
-    const currentTime = Date.now(); //pulls current time in ms
+    const trimetTime = Date.parse(estimated); // estimated time in ms
 
-    const totalMins = (trimetTime - currentTime) / 60000; //time in ms to min
+    const currentTime = Date.now(); // current time in ms
+
+    const totalMins = (trimetTime - currentTime) / 60000; // time in ms to min
 
     const days = parseInt(totalMins/1440, 10);
     const hours = parseInt((totalMins%1440)/60, 10);
     const mins = parseInt(totalMins%60, 10);
-    let arrivalString = ((days) ? days + "d " : "") + ((hours) ? hours + "h " : "") + ((mins > 1) ? mins + " mins" : "") + ((mins === 1) ? mins + " min": "");
+    let arrivalString = ((days) ? days + "d " : "") +
+      ((hours) ? hours + "h " : "") +
+      ((mins > 1) ? mins + " mins" : "") +
+      ((mins === 1) ? mins + " min" : "");
     //e.g. "1d 12h 39 mins" or "2h 1 min" or "2h" or "Arriving Now"
     if (!arrivalString) {
         arrivalString = "Arriving Now";
@@ -134,10 +121,6 @@ class ArrivalsStore extends EventEmitter {
 
   handleActions(action) {
     switch (action.type) {
-      case "CREATE_STUFF": {
-        this.createStuff(action.number);
-        break;
-      }
       case "RECEIVE_ARRIVALS": {
         this.receiveArrivals(action.data);
         break;
