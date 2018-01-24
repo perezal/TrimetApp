@@ -8,18 +8,14 @@ export default class Stop extends React.Component {
 
   render() {
 
-    let routesList = "";
-    if (this.props.routes) {
-      routesList = this.props.routes.map((route, i) => {
-        return <span key={i} className={"line-icon line" + route.route}>{route.route}</span>;
-      });
-    }
+    const routesList = this.props.routes ? this.props.routes.map((route, i) => {
+      return <span key={i} className={"line-icon line" + route.route}>{route.route}</span>
+    }) : null;
 
-    const {name} = this.props;
-    const {stopID} = this.props;
+    const { name, stopID } = this.props;
 
     return (
-      <tr onClick={this.handleStopSelect.bind(this)}>
+      <tr onClick={ this.handleStopSelect.bind(this) }>
         <td>
           {name}
         </td>

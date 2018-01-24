@@ -1,20 +1,65 @@
 import React from "react";
 
-import StopIDSearch from "./StopIDSearch";
-import LocationSearch from "./LocationSearch";
-import LineSearch from "./LineSearch";
+import { connect } from "react-redux";
+import { fetchStops, fetchLines, fetchArrivals } from "../actions";
 
-export default class Search extends React.Component {
+class Search extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      stopID: ''
+    }
+  }
+
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
+  handleArrivalsSearch(e) {
+    e.preventDefault();
+    const { stopID } = this.state;
+    if (!stopID || isNaN(stopID)) {
+      alert("Entry must only consist of numbers and not be blank");
+      this.setState({stopID: ''});
+    } else {
+      this.props.onArrivalsSearch(this.state.stopID);
+    }
+  }
 
   render() {
 
     return (
-      <ul className="search">
-        <LocationSearch onLocationSearch={this.props.onLocationSearch} />
-        <StopIDSearch query={this.props.query} onQueryChange={this.props.onQueryChange} onSubmit={this.props.onSearchSubmit} />
-        <LineSearch onLineSearch={this.props.onLineSearch} />
-      </ul>
+      <nav className="search-menu">
+        <ul className="search">
+          <li id="nearby-stops" className="search-button">
+            <button onClick={this.props.onLocationSearch}>Nearby Stops</button>
+          </li>
+          <li id="get-arrivals" className="search-button">
+            <form action="/" onSubmit={ this.handleArrivalsSearch.bind(this) }>
+              <button>Search by Stop ID</button>
+              <input type="text" name="stopID" onChange={this.handleChange.bind(this)} value={this.state.stopID} />
+            </form>
+          </li>
+          <li id="search-by-line" className="search-button">
+            <button onClick={this.props.onLineSearch}>Search By Line</button>
+          </li>
+        </ul>
+      </nav>
     );
   }
 
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLocationSearch: () => dispatch(fetchStops()),
+    onArrivalsSearch: (stopID) => dispatch(fetchArrivals(stopID)),
+    onLineSearch: () => dispatch(fetchLines())
+  }
+};
+
+const connectedSearch = connect(null, mapDispatchToProps)(Search);
+
+export default connectedSearch;

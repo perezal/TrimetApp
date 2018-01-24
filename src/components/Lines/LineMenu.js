@@ -38,15 +38,11 @@ export default class LineMenu extends React.Component {
   render() {
 
     const linesList = this.props.lines.map((line, i) => {
-
       return <Line key={i} value={line.route} {...line} />;
-
     });
 
     const dirsList = this.props.dirs.map((dir, i) => {
-
       return <Line key={i} name={dir.desc} value={dir.dir} />
-
     });
 
     // takes the current selected direction, either 0 or 1
@@ -55,7 +51,6 @@ export default class LineMenu extends React.Component {
     const stops = this.props.dirs[this.state.dir] ? this.props.dirs[this.state.dir].stop : [];
 
     const stopsList = stops.map((stop, i) => {
-
       return <Line key={i} name={stop.desc} value={stop.locid} />
     });
 
@@ -74,11 +69,9 @@ export default class LineMenu extends React.Component {
           {stopsList}
         </select>
         <br />
-        <div className="search-hover">
-          <button className="search-button line-submit" onClick={this.handleSubmit.bind(this)}>
-            Submit
-          </button>
-        </div>
+        <button className="line-submit" onClick={this.handleSubmit.bind(this)}>
+          Submit
+        </button>
       </div>
     );
   }

@@ -1,38 +1,34 @@
 import React from "react";
 
-import Arrival from "./StopIDSearch/Arrival";
-import StopTable from "./LocationSearch/StopTable";
-import LineMenu from "./LineSearch/LineMenu";
+import { connect } from "react-redux";
 
-export default class Results extends React.Component {
+import { fetchArrivals, fetchLines } from "../actions";
+
+import Arrival from "./Arrivals/Arrival";
+import StopTable from "./Stops/StopTable";
+import LineMenu from "./Lines/LineMenu";
+
+class Results extends React.Component {
 
   render() {
 
-    let stopName, arrivalList, stopTable, lineMenu;
+    const loadingAnimation = this.props.isFetching ? <div className="loading-animation"><div className="circle"></div><div className="circle1"></div></div> : null;
 
-    // "mode" controls which results are displayed, ensuring only the most recently clicked search is shown
+    const stopName = this.props.stopName ? <h2>Arrivals for {this.props.stopName}</h2> : "";
+    const arrivalList = this.props.arrivals ? this.props.arrivals.map(arrival => <Arrival {...arrival} />) : "";
 
-    const {mode} = this.props;
+    const stopTable = this.props.stops[0] ? <StopTable stops={this.props.stops} onStopSelect={this.props.onStopSelect} /> : null;
 
-    if (mode === 1) { //location search
-
-      stopTable = this.props.stops[0] ? <StopTable stops={this.props.stops} onStopSelect={this.props.onStopSelect} /> : null;
-
-    } else if (mode === 2) { // stopID search
-
-      stopName = this.props.stopName ? <h2>Arrivals for {this.props.stopName}</h2> : "";
-
-      arrivalList = this.props.arrivals.map((arrival) => {
-        return <Arrival key={1} {...arrival} />;
-      });
-
-    } else if (mode === 3) { // line search
-
-      lineMenu = this.props.lines[0] ? <LineMenu lines={this.props.lines} dirs={this.props.dirs} onLineSelect={this.props.onLineSelect} onStopSelect={this.props.onStopSelect} /> : null;
-    }
+    const lineMenu = this.props.lines[0] ? <LineMenu lines={this.props.lines} dirs={this.props.dirs} onLineSelect={this.props.onLineSelect} onStopSelect={this.props.onStopSelect} /> : null;
 
     return (
-      <div id="results" className="results">
+      <div className="results">
+        <a href="https://github.com/perezal/TrimetApp" target="_blank" rel="noopener noreferrer" className="github-logo">
+          <img src="/images/github.png" alt="github-logo" />
+          <span>See me on Github!</span>
+        </a>
+        <h1>The Trimet App for Ninjas</h1>
+        {loadingAnimation}
         {stopName}
         {arrivalList}
         {stopTable}
@@ -41,3 +37,27 @@ export default class Results extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  const isFetching = state.stops.isFetching || state.lines.isFetching || state.arrivals.isFetching;
+  return {
+    stops: state.stops.stops,
+    lines: state.lines.lines,
+    isFetching: isFetching,
+    dirs: state.dirs.dirs,
+    stopID: state.stops.stopID,
+    stopName: state.arrivals.stopName,
+    arrivals: state.arrivals.arrivals,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onStopSelect: (stopID) => dispatch(fetchArrivals(stopID)),
+    onLineSelect: (line) => dispatch(fetchLines(line))
+  }
+}
+
+const connectedResults = connect(mapStateToProps, mapDispatchToProps)(Results);
+
+export default connectedResults;

@@ -6,7 +6,7 @@ export default class StopTable extends React.Component {
 
   render() {
     const stopsList = this.props.stops.map((stop, i) => {
-      return <Stop key={i} {...stop} onStopSelect={this.props.onStopSelect}/>;
+      return <Stop key={i} {...stop} onStopSelect={this.props.onStopSelect} />;
     });
 
     return (
