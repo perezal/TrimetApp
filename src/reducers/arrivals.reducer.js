@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const initialState = {
   isFetching: false,
   stopID: 0,
@@ -33,25 +35,14 @@ const format_arrivals = data => {
   };
 }
 
-// Because Safari is incapable of doing this with Date.parse()
-const createDateObject = trimetTime => {
-  const a = trimetTime.split(/[^0-9]/);
-  return new Date(a[0], a[1]-1, a[2], a[3], a[4], a[5]);
-}
-
 const formatScheduledTime = scheduledTime => {
-  const arrivalTime = createDateObject(scheduledTime).toLocaleTimeString();
+  const arrivalTime = moment(scheduledTime).format('h:mm A');
   return "Arrives at " + arrivalTime + " (scheduled)";
 }
 
 const formatEstimatedTime = estimatedTime => {
 
-  // format time into Date object (because Safari is curiously unable to do so with Date.parse())
-  // const a = estimatedTime.split(/[^0-9]/);
-  // estimatedTime = new Date(a[0], a[1]-1, a[2], a[3], a[4], a[5]);
-
-  // converted from ms to min
-  const minsToArrival = (createDateObject(estimatedTime) - Date.now()) / 60000;
+  const minsToArrival = moment(estimatedTime).diff(moment(), 'minutes');
 
   const days = parseInt( minsToArrival / 1440, 10 );
   const hours = parseInt(( minsToArrival % 1440 ) / 60, 10 );

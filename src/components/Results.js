@@ -27,7 +27,7 @@ class Results extends React.Component {
           <img src="/images/github.png" alt="github-logo" />
           <span>See me on Github!</span>
         </a>
-        <h1>The Trimet App for Ninjas</h1>
+        <h1>The Trimet App</h1>
         {loadingAnimation}
         {stopName}
         {arrivalList}

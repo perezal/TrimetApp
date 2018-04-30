@@ -4,18 +4,15 @@ import Line from "./Line";
 
 export default class LineMenu extends React.Component {
 
-  constructor() {
-    super();
-    this.state = {
-      dir: 0
-    }
+  state = {
+    dir: 0
   }
 
   componentDidMount() {
     this.handleLineSelect();
   }
 
-  handleLineSelect() {
+  handleLineSelect = () => {
     const lineSelect = this.lineSelect.value;
     this.props.onLineSelect(lineSelect);
     this.setState({
@@ -23,14 +20,14 @@ export default class LineMenu extends React.Component {
     });
   }
 
-  handleDirSelect() {
+  handleDirSelect = () => {
     const dirSelect = this.dirSelect.value;
     this.setState({
       dir: dirSelect
     });
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     const stopID = this.stopSelect.value;
     this.props.onStopSelect(stopID);
   }
@@ -57,11 +54,11 @@ export default class LineMenu extends React.Component {
     return (
       <div className="line-menu">
         <br />
-        <select ref={(selection) => this.lineSelect = selection} onChange={this.handleLineSelect.bind(this)}>
+        <select ref={(selection) => this.lineSelect = selection} onChange={this.handleLineSelect}>
           {linesList}
         </select>
         <br />
-        <select ref={(selection) => this.dirSelect = selection} onChange={this.handleDirSelect.bind(this)}>
+        <select ref={(selection) => this.dirSelect = selection} onChange={this.handleDirSelect}>
           {dirsList}
         </select>
         <br />
@@ -69,7 +66,7 @@ export default class LineMenu extends React.Component {
           {stopsList}
         </select>
         <br />
-        <button className="line-submit" onClick={this.handleSubmit.bind(this)}>
+        <button className="line-submit" onClick={this.handleSubmit}>
           Submit
         </button>
       </div>

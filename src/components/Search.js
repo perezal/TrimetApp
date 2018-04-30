@@ -5,11 +5,8 @@ import { fetchStops, fetchLines, fetchArrivals } from "../actions";
 
 class Search extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      stopID: ''
-    }
+  state = {
+    stopID: ''
   }
 
   handleChange(e) {
@@ -31,8 +28,8 @@ class Search extends React.Component {
   render() {
 
     return (
-      <nav className="search-menu">
-        <ul className="search">
+      <nav className="search">
+        <ul className="search-menu">
           <li id="nearby-stops" className="search-button">
             <button onClick={this.props.onLocationSearch}>Nearby Stops</button>
           </li>
