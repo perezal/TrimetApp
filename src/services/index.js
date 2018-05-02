@@ -5,8 +5,10 @@ export const requests = {
   getDirs,
 };
 
+const API_BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.alexperez.ninja' : 'http://localhost:8000';
+
 function getArrivals(stopID) {
-  const source = "https://api.alexperez.ninja/trimet/arrivals/" + stopID;
+  const source = API_BASE_URL + "/trimet/arrivals/" + stopID;
 
   return fetch(source)
     .then(function(response) {
@@ -28,7 +30,7 @@ function getArrivals(stopID) {
 }
 
 function getLines() {
-  const source = "https://api.alexperez.ninja/trimet/lines/";
+  const source = API_BASE_URL + "/trimet/lines/";
 
   return fetch(source)
     .then(function(response) {
@@ -60,7 +62,7 @@ function getNearbyStops() {
   return geolocationPromise
     .then(function(position) {
       const { longitude, latitude } = position.coords;
-      const source = "https://api.alexperez.ninja/trimet/stops/" +
+      const source = API_BASE_URL + "/trimet/stops/" +
                       longitude + "/" + latitude;
 
       return fetch(source)
@@ -85,7 +87,7 @@ function getNearbyStops() {
 
 function getDirs(lineSelect) {
 
-  const source = "https://api.alexperez.ninja/trimet/lines/" + lineSelect;
+  const source = API_BASE_URL + "/trimet/lines/" + lineSelect;
 
   return fetch(source)
     .then(function(response) {
