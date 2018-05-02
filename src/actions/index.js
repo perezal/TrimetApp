@@ -1,15 +1,17 @@
-import { requests } from "../services";
+import moment from 'moment';
+import { requests } from '../services';
+import { actionTypes } from '../constants/actions';
 
-export const clearAll = () => ({
-  type: "CLEAR_ALL"
+const clearAll = () => ({
+  type: actionTypes.CLEAR_ALL
 })
 
-export const requestStops = () => ({
-  type: "REQUEST_STOPS"
+const requestStops = () => ({
+  type: actionTypes.REQUEST_STOPS
 });
 
-export const receiveStops = (data) => ({
-  type: "RECEIVE_STOPS",
+const receiveStops = (data) => ({
+  type: actionTypes.RECEIVE_STOPS,
   payload: data
 });
 
@@ -28,17 +30,17 @@ export const fetchStops = () => {
   }
 }
 
-export const requestLines = () => ({
-  type: "REQUEST_LINES"
+const requestLines = () => ({
+  type: actionTypes.REQUEST_LINES
 });
 
-export const receiveLines = (data) => ({
-  type: "RECEIVE_LINES",
+const receiveLines = (data) => ({
+  type: actionTypes.RECEIVE_LINES,
   payload: data
 });
 
-export const receiveDirs = (data) => ({
-  type: "RECEIVE_DIRS",
+const receiveDirs = (data) => ({
+  type: actionTypes.RECEIVE_DIRS,
   payload: data
 });
 
@@ -62,13 +64,14 @@ export const fetchLines = (line = false) => {
   }
 }
 
-export const requestArrivals = () => ({
-  type: "REQUEST_ARRIVALS"
+const requestArrivals = () => ({
+  type: actionTypes.REQUEST_ARRIVALS
 });
 
-export const receiveArrivals = (data) => ({
-  type: "RECEIVE_ARRIVALS",
-  payload: data
+const receiveArrivals = (data) => ({
+  type: actionTypes.RECEIVE_ARRIVALS,
+  payload: data,
+  currentTime: moment()
 });
 
 export const fetchArrivals = (stopID) => {

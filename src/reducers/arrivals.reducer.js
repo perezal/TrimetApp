@@ -7,7 +7,7 @@ const initialState = {
   arrivals: []
 };
 
-const format_arrivals = data => {
+const format_arrivals = (data, currentTime) => {
   const rawArrivalData = data.arrival;
 
   // can this be moved to CSS?
@@ -21,9 +21,9 @@ const format_arrivals = data => {
   }
 
   const arrivalData = rawArrivalData.map((arrival) => ({
-      key: arrival.scheduled,
+      key: arrival.block,
       name: arrival.shortSign,
-      arrivesIn: arrival.estimated ? formatEstimatedTime(arrival.estimated) : formatScheduledTime(arrival.scheduled),
+      arrivesIn: arrival.estimated ? formatEstimatedTime(arrival.estimated, currentTime) : formatScheduledTime(arrival.scheduled),
       routeColor: routeColors[arrival.route] ? routeColors[arrival.route] : "busline"
     })
   );
@@ -40,9 +40,9 @@ const formatScheduledTime = scheduledTime => {
   return "Arrives at " + arrivalTime + " (scheduled)";
 }
 
-const formatEstimatedTime = estimatedTime => {
+const formatEstimatedTime = (estimatedTime, currentTime) => {
 
-  const minsToArrival = moment(estimatedTime).diff(moment(), 'minutes');
+  const minsToArrival = moment(estimatedTime).diff(currentTime, 'minutes');
 
   const days = parseInt( minsToArrival / 1440, 10 );
   const hours = parseInt(( minsToArrival % 1440 ) / 60, 10 );
@@ -65,10 +65,11 @@ const arrivals = (state = initialState, action) => {
         isFetching: true,
       };
     case "RECEIVE_ARRIVALS":
-      return Object.assign(...state,
-        format_arrivals(action.payload),
-        { isFetching: false },
-      );
+      return {
+        ...state,
+        ...format_arrivals(action.payload, action.currentTime),
+        isFetching: false,
+      };
     case "CLEAR_ALL":
       return initialState;
     default:
