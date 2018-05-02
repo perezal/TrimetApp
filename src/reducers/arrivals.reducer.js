@@ -36,7 +36,7 @@ const format_arrivals = (data, currentTime) => {
 }
 
 const formatScheduledTime = scheduledTime => {
-  const arrivalTime = moment(scheduledTime).format('h:mm A');
+  const arrivalTime = moment.parseZone(scheduledTime).format('h:mm A');
   return "Arrives at " + arrivalTime + " (scheduled)";
 }
 
